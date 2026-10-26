@@ -122,9 +122,9 @@ main {
 }
 
 .brand-logo svg {
-  width: 28px;
-  height: 28px;
-  fill: currentColor;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .nav-search {

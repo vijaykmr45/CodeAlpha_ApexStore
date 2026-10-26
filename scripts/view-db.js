@@ -18,7 +18,7 @@ const tableName = args[0];
 
 function showAllTablesSummary() {
   console.log('\n======================================================');
-  console.log('📦 ApexStore SQLite Database Explorer');
+  console.log('📦 ANGADI HUB SQLite Database Explorer');
   console.log(`📁 File: ${dbPath}`);
   console.log('======================================================\n');
 

@@ -1,4 +1,4 @@
-# CodeAlpha_ApexStore - Modern E-Commerce Platform
+# ANGADI HUB - Modern E-Commerce Platform
 
 A fast, responsive, and robust full-stack e-commerce web application with product listings, category search, product details, interactive shopping cart, order checkout with transactional inventory deduction, and customer authentication.
 

@@ -25,7 +25,7 @@ const ProductDetail = {
   },
 
   renderProduct(p) {
-    document.title = `${p.name} - ApexStore`;
+    document.title = `${p.name} - ANGADI HUB`;
 
     // Breadcrumbs
     const bcCategory = document.getElementById('bc-category');
