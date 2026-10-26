@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - ApexStore</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>ApexStore</span>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <div style="display: flex; gap: 16px;">
+        <a href="/index.html" class="nav-link">← Back to Catalog</a>
+      </div>
+
+      <!-- User & Cart Actions -->
+      <div class="nav-actions">
+        <div id="user-nav-container">
+          <!-- Populated by auth.js -->
+        </div>
+
+        <a href="/cart.html" class="cart-button" title="View Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div style="margin-bottom: 28px;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 8px;">Shopping Cart</h1>
+      <p style="color: var(--text-muted);">Review your selected merchandise before proceeding to secure checkout.</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="cart-empty-state" class="empty-state" style="display: none; background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+      <div class="empty-icon">🛒</div>
+      <h2 class="empty-title">Your shopping cart is empty</h2>
+      <p class="empty-desc">Looks like you haven't added any products to your cart yet. Explore our curated catalog for top electronics and audio accessories.</p>
+      <a href="/index.html" class="btn btn-primary">Start Shopping</a>
+    </div>
+
+    <!-- Active Cart Layout -->
+    <div class="cart-layout" id="cart-main-layout">
+      <!-- Items Table -->
+      <div class="cart-card">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="cart-items-container">
+            <!-- Populated by cart-page.js -->
+          </tbody>
+        </table>
+
+        <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+          <a href="/index.html" class="btn btn-secondary btn-sm">← Continue Shopping</a>
+          <button class="btn btn-outline btn-sm" onclick="Cart.clear().then(() => CartPage.loadCart())">Clear Cart</button>
+        </div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <div class="summary-card" id="cart-summary-container">
+        <h3 class="summary-title">Order Summary</h3>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summary-subtotal" style="font-weight: 600; color: var(--text-main);">$0.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Estimated Shipping</span>
+          <span id="summary-shipping" style="font-weight: 600; color: var(--text-main);">$0.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Estimated Sales Tax (8%)</span>
+          <span id="summary-tax" style="font-weight: 600; color: var(--text-main);">$0.00</span>
+        </div>
+
+        <div id="free-shipping-note" style="font-size: 0.82rem; background: var(--bg-alt); padding: 8px 12px; border-radius: var(--radius-md); margin: 12px 0;">
+          Free shipping on orders over $50!
+        </div>
+
+        <div class="summary-row total-row">
+          <span>Estimated Total</span>
+          <span id="summary-total" style="color: var(--primary);">$0.00</span>
+        </div>
+
+        <button class="btn btn-primary btn-block" style="margin-top: 20px;" onclick="CartPage.proceedToCheckout()">
+          Proceed to Checkout →
+        </button>
+
+        <div style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+          🔒 100% Encrypted & Safe Payment
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Inc.</strong> — Fast, Responsive, Full-Stack E-Commerce
+      </div>
+      <div>
+        Need help? Contact support@apexstore.example
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/cart-page.js"></script>
+</body>
+</html>

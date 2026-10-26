@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Access - ApexStore</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>ApexStore</span>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <div style="display: flex; gap: 16px;">
+        <a href="/index.html" class="nav-link">← Return to Store</a>
+      </div>
+
+      <!-- User & Cart Actions -->
+      <div class="nav-actions">
+        <div id="user-nav-container">
+          <!-- Populated by auth.js -->
+        </div>
+
+        <a href="/cart.html" class="cart-button" title="View Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div class="auth-container">
+      
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <div id="tab-login-btn" class="auth-tab active" onclick="AuthPage.switchTab('login')">Sign In</div>
+        <div id="tab-register-btn" class="auth-tab" onclick="AuthPage.switchTab('register')">Create Account</div>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="form-login">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block" style="padding: 12px; margin-top: 8px;">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" style="display: none;">
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="e.g. Jane Doe" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password (min 6 characters)</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="••••••••" minlength="6" required />
+        </div>
+
+        <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-block" style="padding: 12px; margin-top: 8px;">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Demo Account Quick Fill -->
+      <div class="demo-credentials-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>Quick Demo Account:</strong><br>
+            <span style="color: var(--text-muted);">demo@example.com / password123</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="AuthPage.fillDemoUser()">Auto-Fill</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Inc.</strong> — Identity & Access Service
+      </div>
+      <div>
+        Protected by salted bcrypt & JWT cryptography
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/auth-page.js"></script>
+</body>
+</html>

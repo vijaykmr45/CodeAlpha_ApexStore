@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - ApexStore</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>ApexStore</span>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <div style="display: flex; gap: 16px;">
+        <a href="/index.html" class="nav-link">← Store Catalog</a>
+      </div>
+
+      <!-- User & Cart Actions -->
+      <div class="nav-actions">
+        <div id="user-nav-container">
+          <!-- Populated by auth.js -->
+        </div>
+
+        <a href="/cart.html" class="cart-button" title="View Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div style="margin-bottom: 28px;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 6px;">Your Order History</h1>
+      <p style="color: var(--text-muted);">Track shipments, inspect invoice items, and review previous transactions.</p>
+    </div>
+
+    <!-- Sign In Prompt (Shown if guest) -->
+    <div id="orders-auth-prompt" class="cart-card" style="display: none; text-align: center; padding: 48px 24px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">🔒</div>
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Sign In to View Orders</h2>
+      <p style="color: var(--text-muted); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto;">
+        Please sign in with your customer account to view your past orders, delivery tracking, and receipt history.
+      </p>
+      <a href="/auth.html" class="btn btn-primary">Sign In / Register</a>
+    </div>
+
+    <!-- Empty State (Shown if 0 orders) -->
+    <div id="orders-empty-state" class="empty-state" style="display: none; background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+      <div class="empty-icon">📦</div>
+      <h2 class="empty-title">No orders placed yet</h2>
+      <p class="empty-desc">You haven't completed any orders yet. Discover our premium electronics and start shopping today.</p>
+      <a href="/index.html" class="btn btn-primary">Explore Products</a>
+    </div>
+
+    <!-- Orders List -->
+    <div id="orders-list-container">
+      <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+        Loading orders...
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Inc.</strong> — Order Fulfillment Center
+      </div>
+      <div>
+        Need returns or support? Email support@apexstore.example
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/orders.js"></script>
+</body>
+</html>

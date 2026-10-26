@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexStore - Masters & Administration Console</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+    .admin-tab-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .admin-tab-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .admin-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .stat-badge {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+    }
+    .admin-tab-btn:not(.active) .stat-badge {
+      background: var(--bg-alt);
+      color: var(--text-main);
+    }
+    .icon-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+    .icon-card svg {
+      width: 32px;
+      height: 32px;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="/index.html" class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>ApexStore</span>
+        </a>
+        <span class="badge badge-primary" style="font-weight: 800;">ADMIN CONSOLE</span>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="/index.html" class="btn btn-secondary btn-sm">← Back to Storefront</a>
+        <div id="user-nav-container"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div style="margin-bottom: 24px;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 6px;">Master Data Management</h1>
+      <p style="color: var(--text-muted);">Manage product inventory, category masters, customer accounts, and order fulfillment in real time.</p>
+    </div>
+
+    <!-- Master Navigation Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="products" onclick="Admin.switchTab('products')">
+        <span>📦 Product Master</span>
+        <span class="stat-badge" id="total-product-count">0</span>
+      </button>
+
+      <button class="admin-tab-btn" data-tab="categories" onclick="Admin.switchTab('categories')">
+        <span>🏷️ Category Master</span>
+      </button>
+
+      <button class="admin-tab-btn" data-tab="users" onclick="Admin.switchTab('users')">
+        <span>👥 User Master</span>
+        <span class="stat-badge" id="total-user-count">0</span>
+      </button>
+
+      <button class="admin-tab-btn" data-tab="orders" onclick="Admin.switchTab('orders')">
+        <span>📑 Order Master</span>
+        <span class="stat-badge" id="total-order-count">0</span>
+      </button>
+
+      <button class="admin-tab-btn" data-tab="icons" onclick="Admin.switchTab('icons')">
+        <span>🎨 Icon Studio & Guide</span>
+      </button>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: PRODUCT MASTER -->
+    <!-- ======================================================== -->
+    <div id="tab-products" class="admin-tab-content">
+      <div class="cart-card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+          <div style="max-width: 320px; width: 100%;">
+            <input type="text" id="admin-product-search" class="form-input" placeholder="🔍 Search products by title or category..." />
+          </div>
+          <button class="btn btn-primary" onclick="Admin.openCreateModal()">
+            <span>+ Create New Product</span>
+          </button>
+        </div>
+
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">ID</th>
+              <th style="width: 60px;">Image</th>
+              <th>Product Details</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-products-table">
+            <!-- Populated by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: CATEGORY MASTER -->
+    <!-- ======================================================== -->
+    <div id="tab-categories" class="admin-tab-content" style="display: none;">
+      <div style="margin-bottom: 20px;">
+        <p style="color: var(--text-muted);">Categories group products across the storefront and power the live filter pills.</p>
+      </div>
+
+      <div id="admin-categories-cards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+        <!-- Populated by admin.js -->
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: USER MASTER -->
+    <!-- ======================================================== -->
+    <div id="tab-users" class="admin-tab-content" style="display: none;">
+      <div class="cart-card">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px;">Registered Customer & Admin Accounts</h3>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">User ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Member Since</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-table">
+            <!-- Populated by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: ORDER MASTER -->
+    <!-- ======================================================== -->
+    <div id="tab-orders" class="admin-tab-content" style="display: none;">
+      <div class="cart-card">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 16px;">All Platform Orders & Fulfillment</h3>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Ship To</th>
+              <th>Total</th>
+              <th>Update Status</th>
+              <th>Placed At</th>
+              <th>Receipt</th>
+            </tr>
+          </thead>
+          <tbody id="admin-orders-table">
+            <!-- Populated by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: ICON STUDIO & GUIDE -->
+    <!-- ======================================================== -->
+    <div id="tab-icons" class="admin-tab-content" style="display: none;">
+      <div class="cart-card" style="margin-bottom: 24px;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 12px;">🎨 How to Create & Use Icons in ApexStore</h2>
+        <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+          ApexStore uses clean, scalable **vector SVG (Scalable Vector Graphics)** icons and emoji badges. SVGs are lightweight, render crisply on retina displays, and can be colored dynamically with CSS <code>currentColor</code> or custom fill/stroke properties.
+        </p>
+
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin: 18px 0 8px;">1. Standard SVG Icon Template</h3>
+        <pre style="background: var(--bg-alt); padding: 14px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 16px;">
+&lt;svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;
+  &lt;!-- Paths go here --&gt;
+&lt;/svg&gt;</pre>
+
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin: 18px 0 8px;">2. Ready-to-Use E-Commerce Icon Library</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; margin-bottom: 24px;">
+          
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Shopping Cart</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Search</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Wishlist / Heart</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Orders / Box</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">User Account</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Credit Card</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Star Rating</span>
+          </div>
+
+          <div class="icon-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Shield / Security</span>
+          </div>
+
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin: 18px 0 8px;">3. Free Online Sources to Create or Download New SVG Icons</h3>
+        <ul style="padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+          <li><strong><a href="https://lucide.dev" target="_blank" style="color: var(--primary); text-decoration: underline;">Lucide Icons</a></strong>: 1000+ clean open-source SVGs. Just search an icon and copy its SVG code.</li>
+          <li><strong><a href="https://heroicons.com" target="_blank" style="color: var(--primary); text-decoration: underline;">Heroicons</a></strong>: Modern icons created by the Tailwind team.</li>
+          <li><strong><a href="https://svgomg.net" target="_blank" style="color: var(--primary); text-decoration: underline;">SVGOMG</a></strong>: Paste raw SVG code to minify and optimize size.</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: CREATE PRODUCT -->
+  <!-- ======================================================== -->
+  <div id="modal-create-product" class="modal-overlay">
+    <div class="modal-content" style="max-width: 620px; text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 1.4rem; font-weight: 800;">Create New Product</h2>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="Admin.closeModal('modal-create-product')">✕</button>
+      </div>
+
+      <form id="create-product-form">
+        <div class="form-group">
+          <label class="form-label" for="new-prod-name">Product Name *</label>
+          <input type="text" id="new-prod-name" class="form-input" placeholder="e.g. Wireless Pro Earbuds" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="new-prod-category">Category *</label>
+            <input type="text" id="new-prod-category" class="form-input" placeholder="e.g. Audio, Electronics, Wearables" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="new-prod-price">Price ($) *</label>
+            <input type="number" step="0.01" min="0" id="new-prod-price" class="form-input" placeholder="99.99" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="new-prod-stock">Stock Quantity *</label>
+            <input type="number" min="0" id="new-prod-stock" class="form-input" value="25" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="new-prod-rating">Customer Rating (1 - 5)</label>
+            <input type="number" step="0.1" min="1" max="5" id="new-prod-rating" class="form-input" value="4.8" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quick Image Preset:</label>
+          <div id="image-preset-buttons" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+            <!-- Rendered by admin.js -->
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <input type="url" id="new-prod-image" class="form-input" placeholder="https://..." required />
+            <img id="new-prod-preview" src="" alt="preview" style="width: 48px; height: 48px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border);" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="new-prod-description">Full Description *</label>
+          <textarea id="new-prod-description" class="form-input" rows="3" placeholder="Enter detailed specifications and features..." required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" onclick="Admin.closeModal('modal-create-product')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: EDIT PRODUCT -->
+  <!-- ======================================================== -->
+  <div id="modal-edit-product" class="modal-overlay">
+    <div class="modal-content" style="max-width: 620px; text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 1.4rem; font-weight: 800;">Edit Product</h2>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="Admin.closeModal('modal-edit-product')">✕</button>
+      </div>
+
+      <form id="edit-product-form">
+        <input type="hidden" id="edit-prod-id" />
+
+        <div class="form-group">
+          <label class="form-label" for="edit-prod-name">Product Name *</label>
+          <input type="text" id="edit-prod-name" class="form-input" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-prod-category">Category *</label>
+            <input type="text" id="edit-prod-category" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-prod-price">Price ($) *</label>
+            <input type="number" step="0.01" min="0" id="edit-prod-price" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-prod-stock">Stock Quantity *</label>
+            <input type="number" min="0" id="edit-prod-stock" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-prod-rating">Customer Rating (1 - 5)</label>
+            <input type="number" step="0.1" min="1" max="5" id="edit-prod-rating" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-prod-image">Image URL *</label>
+          <input type="url" id="edit-prod-image" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-prod-description">Full Description *</label>
+          <textarea id="edit-prod-description" class="form-input" rows="3" required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" onclick="Admin.closeModal('modal-edit-product')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ORDER RECEIPT -->
+  <!-- ======================================================== -->
+  <div id="modal-order-receipt" class="modal-overlay">
+    <div class="modal-content" style="max-width: 500px;">
+      <div id="receipt-modal-content">
+        <!-- Rendered by admin.js -->
+      </div>
+      <div style="margin-top: 20px; text-align: center;">
+        <button type="button" class="btn btn-secondary" onclick="Admin.closeModal('modal-order-receipt')">Close Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Admin Console</strong> — Master Control Layer
+      </div>
+      <div>
+        <a href="/index.html">View Live Store</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

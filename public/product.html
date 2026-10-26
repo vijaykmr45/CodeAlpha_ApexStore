@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - ApexStore</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>ApexStore</span>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <div style="display: flex; gap: 16px;">
+        <a href="/index.html" class="nav-link">← Back to Catalog</a>
+      </div>
+
+      <!-- User & Cart Actions -->
+      <div class="nav-actions">
+        <div id="user-nav-container">
+          <!-- Populated by auth.js -->
+        </div>
+
+        <a href="/cart.html" class="cart-button" title="View Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Breadcrumb -->
+    <nav class="breadcrumbs">
+      <a href="/index.html">Home</a>
+      <span>/</span>
+      <span id="bc-category">Category</span>
+      <span>/</span>
+      <span id="bc-title" style="color: var(--text-main); font-weight: 600;">Product</span>
+    </nav>
+
+    <!-- Product Layout -->
+    <div class="product-detail-layout">
+      <!-- Left: Image Gallery -->
+      <div class="detail-gallery">
+        <img 
+          id="detail-image" 
+          src="" 
+          alt="" 
+          class="detail-img"
+          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'500\\' height=\\'500\\' viewBox=\\'0 0 500 500\\'><rect width=\\'500\\' height=\\'500\\' fill=\\'%23f1f5f9\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%2394a3b8\\' font-family=\\'sans-serif\\' font-size=\\'20\\'>ApexStore Product</text></svg>';"
+        />
+      </div>
+
+      <!-- Right: Product Info & Actions -->
+      <div class="detail-info">
+        <span class="badge badge-primary" id="detail-category" style="width: fit-content; margin-bottom: 12px;">CATEGORY</span>
+        <h1 class="detail-title" id="detail-title">Loading Product...</h1>
+        
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+          <span id="detail-rating-stars" style="color: var(--accent); font-size: 1.1rem;">★★★★★</span>
+          <span id="detail-rating-num" style="font-weight: 700; color: var(--text-muted);">4.8</span>
+          <span style="color: var(--text-light);">• Verified Customer Reviews</span>
+        </div>
+
+        <div class="detail-price-box">
+          <div class="detail-price" id="detail-price">$0.00</div>
+          <span style="font-size: 0.9rem; color: var(--text-muted);">Tax included at checkout</span>
+        </div>
+
+        <p class="detail-desc" id="detail-description">
+          Loading detailed product description...
+        </p>
+
+        <!-- Stock Status -->
+        <div class="stock-status" id="detail-stock">
+          <span class="badge badge-success">Checking Stock...</span>
+        </div>
+
+        <!-- Quantity Picker -->
+        <div style="margin-bottom: 8px;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px;">Select Quantity:</label>
+          <div class="quantity-picker">
+            <button type="button" class="quantity-btn" onclick="ProductDetail.changeQuantity(-1)">−</button>
+            <input type="number" id="qty-input" class="quantity-input" value="1" min="1" oninput="ProductDetail.onQuantityInput(event)">
+            <button type="button" class="quantity-btn" onclick="ProductDetail.changeQuantity(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="detail-actions">
+          <button id="add-to-cart-btn" class="btn btn-secondary" style="flex: 1;" onclick="ProductDetail.addToCart()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span>Add to Cart</span>
+          </button>
+          <button id="buy-now-btn" class="btn btn-primary" style="flex: 1;" onclick="ProductDetail.buyNow()">
+            ⚡ Buy Now
+          </button>
+        </div>
+
+        <!-- Guarantee badges -->
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 0.85rem; color: var(--text-muted);">
+          <div>🚚 <strong>Free Shipping</strong> on orders over $50</div>
+          <div>🔄 <strong>30-Day Returns</strong> money-back guarantee</div>
+          <div>🛡️ <strong>1-Year Warranty</strong> on all items</div>
+          <div>🔒 <strong>Secure Checkout</strong> encrypted processing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section style="margin-top: 48px;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">Recommended For You</h2>
+      <div class="product-grid" id="related-products-grid">
+        <!-- Rendered by product-detail.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Inc.</strong> — Premium E-Commerce Experience
+      </div>
+      <div>
+        <a href="/index.html" style="text-decoration: underline;">Continue Shopping</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/product-detail.js"></script>
+</body>
+</html>

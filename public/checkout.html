@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout & Order Processing - ApexStore</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>ApexStore</span>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <div style="display: flex; gap: 16px;">
+        <a href="/cart.html" class="nav-link">← Return to Cart</a>
+      </div>
+
+      <!-- User & Cart Actions -->
+      <div class="nav-actions">
+        <div id="user-nav-container">
+          <!-- Populated by auth.js -->
+        </div>
+
+        <a href="/cart.html" class="cart-button" title="View Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div style="margin-bottom: 24px;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 6px;">Secure Checkout</h1>
+      <p style="color: var(--text-muted);">Complete your shipping information and payment details below.</p>
+    </div>
+
+    <!-- Guest notification banner if not logged in -->
+    <div id="guest-auth-prompt" style="display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <strong style="color: var(--primary);">Already have an account?</strong>
+          <span style="color: var(--text-muted); font-size: 0.95rem;"> Sign in to link this purchase to your profile and track shipments.</span>
+        </div>
+        <a href="/auth.html" class="btn btn-primary btn-sm">Sign In / Register</a>
+      </div>
+    </div>
+
+    <!-- Checkout Two-Column Grid -->
+    <form id="checkout-form" class="cart-layout">
+      
+      <!-- Left: Shipping & Payment Details -->
+      <div>
+        
+        <!-- Shipping Card -->
+        <div class="cart-card" style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <span>📍 1. Shipping Address</span>
+          </h2>
+
+          <div class="form-group">
+            <label class="form-label" for="shipping-name">Full Name *</label>
+            <input type="text" id="shipping-name" class="form-input" placeholder="e.g. Jane Doe" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="shipping-address">Street Address *</label>
+            <input type="text" id="shipping-address" class="form-input" placeholder="e.g. 123 Market St, Suite 400" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="shipping-city">City *</label>
+              <input type="text" id="shipping-city" class="form-input" placeholder="e.g. San Francisco" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="shipping-zip">Postal / ZIP Code *</label>
+              <input type="text" id="shipping-zip" class="form-input" placeholder="e.g. 94103" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="shipping-phone">Phone Number *</label>
+            <input type="tel" id="shipping-phone" class="form-input" placeholder="e.g. +1 555-0199" required />
+          </div>
+        </div>
+
+        <!-- Payment Card -->
+        <div class="cart-card">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <span>💳 2. Payment Method (Simulated)</span>
+          </h2>
+
+          <div style="background: var(--bg-alt); padding: 12px; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+            💡 <strong>Demo Mode:</strong> You can enter any 16-digit card number (e.g., <code>4242 4242 4242 4242</code>), future expiry date, and 3-digit CVV.
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="card-number">Card Number *</label>
+            <input type="text" id="card-number" class="form-input" placeholder="4242 4242 4242 4242" maxlength="19" value="4242 4242 4242 4242" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="card-expiry">Expiration Date *</label>
+              <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5" value="12/28" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="card-cvv">CVV Code *</label>
+              <input type="text" id="card-cvv" class="form-input" placeholder="123" maxlength="4" value="888" required />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary Sidebar -->
+      <div>
+        <div class="summary-card">
+          <h3 class="summary-title">Order Overview</h3>
+
+          <!-- Items preview -->
+          <div id="checkout-items-list" style="max-height: 220px; overflow-y: auto; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+            <!-- Populated by checkout.js -->
+          </div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="co-subtotal" style="font-weight: 600;">$0.00</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span id="co-shipping" style="font-weight: 600;">$0.00</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Sales Tax (8%)</span>
+            <span id="co-tax" style="font-weight: 600;">$0.00</span>
+          </div>
+
+          <div class="summary-row total-row">
+            <span>Total to Pay</span>
+            <span id="co-total" style="color: var(--primary);">$0.00</span>
+          </div>
+
+          <button type="submit" id="place-order-btn" class="btn btn-primary btn-block" style="margin-top: 24px; padding: 14px;">
+            Complete Purchase & Place Order
+          </button>
+
+          <div style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+            🛡️ Encrypted 256-Bit SSL Connection
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Confirmation Modal Overlay -->
+    <div id="confirmation-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div style="font-size: 3.5rem; color: var(--success); margin-bottom: 12px;">✓</div>
+        <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 8px;">Order Confirmed!</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+          Thank you for your purchase. We have received your order and started processing it for shipment.
+        </p>
+
+        <div style="background: var(--bg-alt); padding: 16px; border-radius: var(--radius-md); text-align: left; margin-bottom: 24px; font-size: 0.95rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: var(--text-muted);">Order Number:</span>
+            <strong id="conf-order-id" style="color: var(--primary);">#0000</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: var(--text-muted);">Total Paid:</span>
+            <strong id="conf-order-total">$0.00</strong>
+          </div>
+          <div style="margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 8px;">
+            <span style="color: var(--text-muted); display: block; font-size: 0.85rem;">Shipping to:</span>
+            <span id="conf-shipping-address" style="font-weight: 600;">123 Street</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <a href="/orders.html" class="btn btn-primary">View My Orders</a>
+          <a href="/index.html" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div>
+        <strong style="color: var(--text-main);">ApexStore Inc.</strong> — Reliable Checkout System
+      </div>
+      <div>
+        Fast & Free Delivery on qualifying purchases
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/checkout.js"></script>
+</body>
+</html>
